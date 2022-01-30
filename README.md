@@ -1,88 +1,76 @@
-# Welcome to IonQ + Microsoft Joint Challenge @ MIT iQuHACK 2022!
+# Quantum Connect 4
 
-<p align="left">
-  <a href="https://azure.microsoft.com/en-us/solutions/quantum-computing/" target="_blank"><img src="https://user-images.githubusercontent.com/10100490/151488491-609828a4-cd1f-4076-b5b2-a8d9fc2d0fa4.png" width="30%"/> </a>
-  <a href="https://ionq.com/" target="_blank"><img src="https://user-images.githubusercontent.com/10100490/151488159-da95eb05-9277-4abe-b1ba-b49871d563ed.svg" width="20%" style="padding: 1%;padding-left: 5%"/></a>
-  <a href="https://iquhack.mit.edu/" target="_blank"><img src="https://user-images.githubusercontent.com/10100490/151647370-d161d5b5-119c-4db9-898e-cfb1745a8310.png" width="8%" style="padding-left: 5%"/> </a>
-  
-</p>
+## Team
+
+Derek Dong, Mayank Bhatia, Sudatta Hor
+
+## Description
+
+A traditional game of Connect4 but with a quantum twist. Typically, during a turn, players choose which column to play their piece. In Quantum Connect4, they are still able to choose a column, but now they can also choose a superposition of two different columns. The game also includes a measurement of this superposition, which collapses the move into one column or the other.
+
+### Use of Quantum
 
 
-Quantum computing has many exciting applications in chemistry, machine learning, and optimization – but we've only scratched the surface of the possibilities as a civilization, just like classical computing in the 1950s. We hope you all go on to do quantum algorithms research that will revolutionize every aspect of society for the better!
+In addition to the quantum concepts of superposition appearing as a game mechanic, quantum computing is also used as part of the backend computation! We use a simple quantum circuit composed of hadamard gates and measurements to generate bitstrings uniformly at random, and this functions as our random number generator for each of the measurements in the game.
 
-Today, though, we've got just 26 hours, and we'd like you to use a quantum computer to build a game, or a component of a game.
+This not only introduces an element of chance, but also an element of strategy to compete for information about the state of the boards.
 
-The possibilities should feel as big as the ones offered by your regular computer! A few ideas to juice your thinking:
-* Use a quantum computer as a random number generator or noise source for
-  - seeding behaviors
-  - procedurally generating maps or music
-* Use quantum logic itself as a gaming mechanism, whether for fun or education
-* Apply Quantum Machine Learning to gameplay
-* [Run Doom... on the universe?](https://www.smbc-comics.com/comic/qc)
+## Instructions for Running the Project
 
-You’ll be able to test your projects on a real ion trap quantum computer provided by IonQ (which [shoots lasers at individual atoms to compute](https://ionq.com/technology)).
-*Remember that current devices are still NISQ, and noise can overtake the computation really fast. We recommend you experiment with circuits that use under a few dozen two-qubit gates.*
+1. Download main.ipynb
+2. Open the quantum workspace on azure (https://aka.ms/aq/hackathon-notebooks)
+3. Open main.ipynb and run it
+4. Follow the prompts to play!
 
-You can develop your project using any language supported by Azure Quantum: Q#, Qiskit, or Cirq.
+### Note on running:
+The notebook can also be run locally. The difference is in the section "Random Number Generation." If running locally, run the subsection "Version for local testing." If running on Azure, run the subsection "Version on the quantum computer." There's also the option to switch to the IonQ simulator in the method "set_backend." Note, however, that we had issues with the simulator in that running 2k+1 shots gave a total of 2k counts in the result, which didn't work because we need tiebreaks.
 
-## Using Azure Quantum
-You should have received an invite to join quantum workspace https://portal.azure.com/52f51314-00bb-49b7-a28d-0b0a4be6d1c9. Join it, and use that workspace’s information to connect to Azure from the environment you’re using to work with the QDK:
-* Subscription ID: b1d7f7f8-743f-458e-b3a0-3e09734d716d
-* Resource group: aq-hackathons
-* Workspace name: aq-hackathon-01
-* Location: eastus
 
-You can use it from Python by using the `azure-quantum` package as follows:
+## Rules
 
-```python
-from azure.quantum import Workspace
-workspace = Workspace (
-    subscription_id = "b1d7f7f8-743f-458e-b3a0-3e09734d716d",
-    resource_group = "aq-hackathons",
-    name = "aq-hackathon-01",
-    location = "eastus"
-)
-```
+- Players can play a piece into a superposition of two columns. For example, 0.5 C1 + 0.5 C2 is a move that has a 50% chance of landing in column 1 and a 50% chance of landing in column 2.
+- A column is measured when a player wants to play into a potentially filled column. When a column is measured, each move corresponding to a spot in the column will be measured in order from bottom to top.
+- If both columns in the superposition of the move are measured to have space, the player's piece will be played as normal
+- If one column is measured to be full and the other to have space, then the piece will be placed into the latter column with 100% certainty.
+- If both columns are measured to be full, the player's piece will not be played.
+- A player wins if they get a row, column, or diagonal of four of their adjacent pieces.
+- The game ends when no more moves can be made.
+  - Since many playthroughs of the game lead to states that are the superposition of some finished and some unfinished boards, we allow the entire board to be filled and then re-iterate over the moves played. By that time, every move must have been measured and has collapsed into a classical move. The winner, then, is the first player to obtain a "4-in-a-row;" the game is a draw if neither player achieves this.
 
-Don't wait until the last moment to submit your programs! IonQ systems operate on a queue system. If you submit a program, it may take a few hours to complete. If you want to make sure you get your results back by Sunday morning, make sure to submit them by the end of day on Saturday.
+## Benefit to Society
 
-## Submitting your projects
-To submit your solutions:
-1. Fork this repository to your GitHub account.
-2. Commit your project to your forked repository.  
-Include any files you consider relevant: the project itself, README including the description of the project and instructions on running the project, screenshots of results, any visualizations you've done, your project presentation, etc.
-3. To submit your project, submit the link to your repository as detailed on https://iquhack.mit.edu/.
-Your repository has to be made public at the time of the Hackathon end for us to be able to judge your solutions. We don't recommend making your work public early during the Hackathon, so as not to tempt other teams to borrow from your work. Let everybody enjoy their exploration!
-*Note that GitHub doesn't allow to change visibility of the forks. You can either fork the repository, keep it public, and push your changes at the last possible moment, or you can duplicate the repository, make it private to work on it during the Hackathon, and make it public at the end of the Hackathon.*
-4. If you want to write a blog post about your project, publish it shortly after the Hackathon ends and add a link to it to your GitHub repository.
 
-## Judging
+For those interested in learning about the fundamentals of quantum mechanics, Quantum Connect4 is a great way to visualize superposition. On the one hand, Connect 4 is not a game commonly studied in game theory. On the other, its simplicity to the layman makes it easy to understand the different elements at play. Quantum Connect 4 also seems to be a fantastic entrypoint to quantum game theory. Its low number of degrees of freedom (the number of moves is equal to the number of columns) makes it likely tractable for some of the earliest quantum AI, while its "gravity" mechanic makes it very interesting to study.
 
-We'll be evaluating the projects based on several criteria, as detailed in this **rubric:** 
+## Examples
 
-https://docs.google.com/document/u/1/d/e/2PACX-1vR5PVoInN_Fi42lIOchhblgGBPblgNyouj1XHukonZ4sdqY-p5ulS9TxdzvddEcDNFc5k_6teFyKzXv/pub
 
-## Eligibility and prizes
-The (1) highest team score will receive a **$500 Visa Gift Card** (physical or virtual) for the team. The next (4) highest team scores will receive a **$250 Visa Gift Card** (physical or virtual) for the team. The (5) winning teams will have an opportunity to present their projects to the Microsoft Quantum Team at a later date and time (to be scheduled after the results announcement).
+![Example Board](https://github.com/SudattaHor/2022_microsoft_ionq_challenge/blob/main/Quantum%20Connect%204/qconnect4.gif)  
+How the board might change as the game is played. Individual spots are filled based on the probability of the corresponding move collapsing to that column.  
 
-Government officials and Microsoft employees are not eligible to participate in this challenge.
 
-For the general rules on eligibility and hackathon participation, please refer to the [official rules](http://iquhack.mit.edu/).
+![Example Interface](https://github.com/SudattaHor/2022_microsoft_ionq_challenge/blob/main/Quantum%20Connect%204/interface_sample1.png)  
+An example of how interfacing with the game might look. Further improvements are on the horizon!
+
+## Next Steps
+
+Quantum Connect4 can be improved in several ways.
+
+- Instead of limiting a move to be in a superposition between two columns, we can extend it to be in a superposition of several columns, up to the player's choice.
+- Increasing board size
+- Examine/evaluate common strategies.
+- Improving the interface using button and slider user input.
+- Improving the graphical representation of the board by visually including more information such as displaying the queue of each move.
+- The game currently detects a win only at the end of the game. Next, we want to be able to identify a win during the game.
+
+## Personal Notes
+
+I enjoyed iQuHACK :) It's only been less than 2 days, but I am very proud of how far our team has come in terms of both project development and team bonding. -Sudatta
+
+iQuHACK is my first-ever hackathon, and I'm very pleased. I didn't even know how the mechanics of quantum computing could apply to games at the start, but with my teammates' support here I am. I'll definitely be back next year! -Derek
+
+My experience was unforgettable! I had so much fun coding, and I am so grateful for iQuHack and my awesome teammates! - Mayank
 
 ## Resources
 
-### Microsoft Quantum Development Kit installation
-
-For this Hackathon, you have several options of setting up the QDK:
-
-* local setup: you'll need the [standalone QDK](https://docs.microsoft.com/en-us/azure/quantum/install-command-line-qdk), and possibly (depending on what kind of project you decide to do) integration with [Q# Jupyter Notebooks](https://docs.microsoft.com/en-us/azure/quantum/install-jupyter-qkd) and/or with [Python](https://docs.microsoft.com/en-us/azure/quantum/install-python-qdk).
-* qBraid: you can use qBraid virtual environment to develop your project. Here are the tutorials on how to [use Q# with qBraid](https://www.youtube.com/watch?v=E5JH1YfqSos) and [submit Azure Quantum jobs with qBraid](https://www.youtube.com/watch?v=WLAAqsqlYb8).
-* Azure Portal: you can use the hosted notebooks experience to run code directly from Azure Portal.
-
-### Documentation and tutorials
-
-* [Azure Quantum and QDK documentation](https://docs.microsoft.com/quantum).
-* [The Quantum Katas](https://github.com/Microsoft/QuantumKatas/) - a collection of tutorials and practice problems.
-* Microsoft Learn learing path ["Quantum computing foundations"](https://docs.microsoft.com/learn/paths/quantum-computing-fundamentals/).
-* [Q# developer blog](https://devblogs.microsoft.com/qsharp/).
-* Azure Fridays episode [Quantum programming with Q# and running on hardware with Azure Quantum](https://www.youtube.com/watch?v=c9Df90CVHkc) shows the end-to-end quantum software development process with the QDK tools.
+Presentation slides: https://docs.google.com/presentation/d/11ASP5GFxbF01kt8On_yrPnLTJBlY-IXP2z4YlSZk_zc/edit?usp=sharing
