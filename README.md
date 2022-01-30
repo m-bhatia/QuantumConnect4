@@ -1,4 +1,4 @@
-# QuantumConnect4
+# QConnect 4
 
 ## Outline (Preview)
 
