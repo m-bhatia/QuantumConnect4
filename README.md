@@ -29,6 +29,9 @@
 ## Rules
 
 - Players can play a piece into a superposition of two columns. For example, 1/2 C1 + 1/2 C2 is a move that has a 50% chance of landing in column 1 and a 50% chance of landing in column 2.
-- A column is measured when a player wants to play into a potentially filled column. If the column is measured to have space, the player's piece will be played into that column. Otherwise, no piece will be played and it becomes the next player's turn.
+- A column is measured when a player wants to play into a potentially filled column.
+- If both columns are measured to have space, the player's piece will be played as normal
+- If one column is measured to be full and the other to have space, then the piece will be placed into the latter column with 100% certainty.
+- If both columns are measure to be full, the player's piece will not be played.
 - A player wins if they get a row, column, or diagonal of four of their adjacent pieces.
 - The game ends when a player wins or if no more moves can be made.
